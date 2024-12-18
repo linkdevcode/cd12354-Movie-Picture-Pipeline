@@ -9,6 +9,12 @@ The team's project is comprised of 2 applications.
 
 You'll find 2 folders, one named `frontend` and one named `backend`, where each application's source code is maintained. Your job is to use the team's [existing documentation](#frontend-development-notes) and create CI/CD pipelines to meet the teams' needs.
 
+## CI/CD Status
+| Aspect               | Continuous Integration                                                                                                     | Continuous Deployment                                                                                                    |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| **Backend**          | [![Backend Continuous Integration](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/backend-ci.yml)  | [![Backend Continuous Deployment](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/backend-cd.yml/badge.svg)](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/backend-cd.yml) |
+| **Frontend**         | [![Frontend Continuous Integration](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/frontend-ci.yml)| [![Frontend Continuous Deployment](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/frontend-cd.yml/badge.svg)](https://github.com/Amnahalkhalil/Movie-Picture-Pipeline/actions/workflows/frontend-cd.yml)|
+
 ## Deliverables
 
 ### Frontend
@@ -465,6 +471,10 @@ kustomize edit set image backend=<ECR_REPO_URL>:<NEW_TAG_HERE>
 # Apply the manifests to the cluster
 kustomize build | kubectl apply -f -
 ```
+
+## Load Balancer Url
+- Front End: http://aa2deeb19e50440bc93bdc81f5ab04c8-870434811.us-east-1.elb.amazonaws.com
+- Back End: http://a3f6818e1e9c9437cb1acccbf825763e-2062745789.us-east-1.elb.amazonaws.com
 
 ## License
 
