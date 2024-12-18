@@ -1,0 +1,36 @@
+name: "Frontend Code Testing"
+description: "Custom GitHub Action to run frontend tests"
+inputs:
+  node_version:
+    description: "The version of Node.js to use for the test execution"
+    required: true
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    # Step 1: Set up Node.js environment
+    - name: Set up Node.js environment
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node_version }}
+
+    # Step 2: Cache Node.js dependencies for efficient builds
+    - name: Cache Node.js dependencies
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: node-modules-${{ runner.os }}-${{ hashFiles('starter/frontend/package-lock.json') }}
+        restore-keys: |
+          node-modules-${{ runner.os }}-
+
+    # Step 3: Install necessary packages
+    - name: Install necessary packages
+      working-directory: starter/frontend
+      run: npm ci
+      shell: bash
+
+    # Step 4: Execute frontend tests
+    - name: Execute frontend tests
+      working-directory: starter/frontend
+      run: npm run test
+      shell: bash

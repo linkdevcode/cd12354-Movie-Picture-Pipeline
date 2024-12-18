@@ -1,0 +1,36 @@
+name: "Frontend Code Linter"
+description: "Custom GitHub Action to check and fix frontend code formatting issues"
+inputs:
+  node_version:
+    description: "The Node.js version required for the workflow"
+    required: true
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    # Step 1: Initialize Node.js environment
+    - name: Initialize Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node_version }}
+
+    # Step 2: Cache dependencies for faster builds
+    - name: Cache Node.js dependencies
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: node-modules-${{ runner.os }}-${{ hashFiles('starter/frontend/package-lock.json') }}
+        restore-keys: |
+          node-modules-${{ runner.os }}-
+
+    # Step 3: Install project dependencies
+    - name: Install project dependencies
+      working-directory: starter/frontend
+      run: npm ci
+      shell: bash
+
+    # Step 4: Execute linting process
+    - name: Execute linting
+      working-directory: starter/frontend
+      run: npm run lint -- --fix
+      shell: bash
