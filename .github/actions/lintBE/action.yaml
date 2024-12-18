@@ -1,23 +1,23 @@
-name: "Backend Lint Action"
-description: "A custom action to lint the backend code"
+name: "Backend Code Linter"
+description: "Custom GitHub Action to perform backend code linting"
 inputs:
   python_version:
-    description: "Python version to use"
+    description: "The Python version to be used during the workflow"
     required: true
   flake8_max_line_length:
-    description: "Maximum line length for Flake8"
+    description: "Defines the maximum allowed line length for Flake8 checks"
     required: true
 outputs: {}
 runs:
   using: "composite"
   steps:
-    # Step 1: Setup Python with specified version
-    - name: Setup Python
+    # Step 1: Configure Python environment
+    - name: Configure Python
       uses: actions/setup-python@v4
       with:
         python-version: ${{ inputs.python_version }}
 
-    # Step 2: Cache pipenv dependencies
+    # Step 2: Enable dependency caching for pipenv
     - name: Cache pipenv dependencies
       uses: actions/cache@v3
       with:
@@ -26,30 +26,30 @@ runs:
         restore-keys: |
           pipenv-${{ runner.os }}-
 
-    # Step 3: Install dependencies
-    - name: Install dependencies
+    # Step 3: Install required tools and dependencies
+    - name: Install tools and dependencies
       run: |
         pip install pipenv
-        pipenv install flake8  
+        pipenv install flake8
         pipenv install
       shell: bash
 
-    # Step 4: Add Lint Script to Pipfile
-    - name: Add Lint Script to Pipfile
+    # Step 4: Append linting script to Pipfile
+    - name: Add linting script
       run: |
         echo -e "\n[scripts]\nlint = \"flake8 .\"" >> Pipfile
-        echo "Added lint script to Pipfile."
+        echo "Linting script added to Pipfile."
       shell: bash
 
-    # Step 5: Create Flake8 Configuration
-    - name: Create Flake8 Configuration
+    # Step 5: Generate Flake8 configuration file
+    - name: Configure Flake8
       run: |
         echo "[flake8]" > .flake8
         echo "max-line-length = ${{ inputs.flake8_max_line_length }}" >> .flake8
       shell: bash
 
-    # Step 6: Run lint
-    - name: Run lint
+    # Step 6: Execute linting process
+    - name: Execute linting
       run: |
         pipenv run lint
       shell: bash
